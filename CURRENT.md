@@ -38,6 +38,14 @@
 
 ---
 
+## Active Sessions
+
+| Agent | Last Seen | Working On |
+|-------|-----------|------------|
+| — | — | — |
+
+---
+
 ## Quick Links
 
 | Purpose | Path |

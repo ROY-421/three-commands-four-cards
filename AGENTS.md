@@ -43,6 +43,8 @@ captured as cards.
 - Link related summaries or cards when relevant.
 - Preserve sources for official rules, data format findings, submission
   requirements, and team decisions.
+- When a card is replaced by a newer finding, set its status to `superseded`
+  and add `superseded_by` pointing to the new card. Don't delete old cards.
 
 ## What Must Be Recorded
 
@@ -69,7 +71,8 @@ Every agent MUST read these before starting work, in order:
 1. **`CURRENT.md`** — Current objectives, experiment queue, decisions, risks
 2. **`AGENTS.md`** (this file) — Project rules and workflow protocol
 3. **`docs/pm-kb/summaries/project-overview.md`** — Project full picture
-4. **`docs/pm-kb/cards/`** most recent 3-5 cards — Latest findings and progress
+4. **`docs/pm-kb/cards/`** most recent 3 cards + ALL cards with `status: open` and
+   `type: risk` or `status: blocked` — Latest findings + unresolved issues
 
 Estimated time: 2-3 minutes.
 
@@ -123,7 +126,7 @@ When the user says **"refresh"** or **"sync"**, do this:
 ```
 1. Run refresh.sh (or refresh.bat on Windows)
 2. If CURRENT.md changed since session start → re-read it fully
-3. Read the 3 newest cards in docs/pm-kb/cards/
+3. Read the 3 newest cards + all open risk/blocked cards in docs/pm-kb/cards/
 4. Read docs/pm-kb/summaries/project-overview.md
 5. Report to user: "Context refreshed. Current status: [one-line summary]"
 ```

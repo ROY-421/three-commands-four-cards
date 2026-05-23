@@ -12,7 +12,8 @@
 ---
 id: card-YYYY-MM-DD-xxx
 type: decision | task | risk | meeting | finding | reference
-status: open | active | done | blocked | archived
+status: open | active | done | blocked | archived | superseded
+superseded_by: [card-id]  (if status: superseded)
 date: YYYY-MM-DD
 project: [project-name]
 keywords: [tag1, tag2]
