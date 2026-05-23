@@ -162,4 +162,4 @@ MIT — use it, fork it, ship it.
 
 ## Author
 
-Created by [邓荣耀](https://github.com/41699655) after running multi-agent workflows on meteorological research projects since 2025. Battle-tested across competition entries, research papers, and daily operations.
+Created by [Deng Rongyao](https://github.com/ROY-421) after running multi-agent workflows on meteorological research projects since 2025. Battle-tested across competition entries, research papers, and daily operations.
