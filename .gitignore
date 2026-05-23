@@ -1,0 +1,27 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# T3C4: ignore project-specific content in template slots
+# (the template ships with placeholders; actual project data goes here)
+
+# Synology / cloud sync conflicts
+*_Conflict.md
+*_Conflict/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Node
+node_modules/
