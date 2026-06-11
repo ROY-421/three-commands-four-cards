@@ -14,10 +14,12 @@ Read `AGENTS.md` first. It contains the full working rules:
 
 | User says | You do |
 |-----------|--------|
-| **"kickoff"** / "start" | Read CURRENT.md + AGENTS.md + recent cards → report status |
+| **"kickoff"** / "start" | Read CURRENT.md + AGENTS.md + recent cards → report status → **wait for confirmation** |
+| **"resume"** / "继续" | Check timestamp → read 3 latest cards → report |
 | **"wrap"** / "done" | Write cards + update CURRENT.md + summarize |
 | **"refresh"** / "sync" | Check if CURRENT.md changed → re-read |
 | **"status"** / "progress" | Read CURRENT.md → report state |
+| **"note this"** / "记一下" | Immediately write the last finding as a card |
 
 ## 3. Key Paths
 

@@ -2,7 +2,7 @@
 
 This file defines project-level working rules for `[project-name]`.
 
-> To collaborators: drop this file into your project root. Your AI assistant reads it and knows how to work with you. Remember 4 words: **"kickoff", "wrap", "refresh", "status"**.
+> To collaborators: drop this file into your project root. Your AI assistant reads it and knows how to work with you. Remember 6 words: **"kickoff", "resume", "wrap", "refresh", "status", "note this"**.
 
 ## Knowledge Base Rule
 
@@ -64,17 +64,34 @@ Record these items in the knowledge base:
 This protocol applies to ALL AI agents, whether running locally (Codex, Claude Code)
 or remotely (via cc-connect).
 
-### Session Start
+### Session Start ("kickoff")
 
 Every agent MUST read these before starting work, in order:
 
-1. **`CURRENT.md`** — Current objectives, experiment queue, decisions, risks
-2. **`AGENTS.md`** (this file) — Project rules and workflow protocol
-3. **`docs/pm-kb/summaries/project-overview.md`** — Project full picture
-4. **`docs/pm-kb/cards/`** most recent 3 cards + ALL cards with `status: open` and
-   `type: risk` or `status: blocked` — Latest findings + unresolved issues
+1. **Check CURRENT.md modification time** — If it's newer than your session start,
+   context is stale
+2. **Read `CURRENT.md`** — Current objectives, experiment queue, decisions, risks
+3. **Read `AGENTS.md`** (this file) — Project rules and workflow protocol
+4. **Read `docs/pm-kb/summaries/project-overview.md`** — Project full picture
+5. **Read `docs/pm-kb/cards/`** — most recent 5 cards + ALL cards with `status: open`
+   and `type: risk` or `status: blocked`
+6. **Report status** — "Kickoff complete. Current status: [one-line summary]"
+7. **Wait for user confirmation** — Do NOT start working until the user says "go",
+   "ok", or gives a specific instruction
 
 Estimated time: 2-3 minutes.
+
+> **v4.1**: Step 7 is critical. Always report first, then wait. Never act on your own.
+
+### Resume Protocol ("resume" / "继续")
+
+When the user says **"resume"** (e.g., after context compression or a short break):
+
+1. Check CURRENT.md modification time vs your last activity time
+   - If CURRENT.md changed → run full kickoff (7 steps above)
+   - If unchanged → read the 3 newest cards
+2. Report: "Resumed. Last activity: [time]. Status unchanged."
+3. Wait for user instructions
 
 ### During Session
 
@@ -82,6 +99,9 @@ Estimated time: 2-3 minutes.
   (file: `docs/pm-kb/cards/YYYY-MM-DD-brief-topic.md` using the SCHEMA template)
 - Update `CURRENT.md` experiment table when status changes
 - Do not leave important information only in chat history
+- When the user says **"note this"** / **"记一下"**: immediately write the last finding
+  as a card. Don't wait for wrap. This prevents key discoveries from being diluted
+  by later discussion.
 
 ### Session End
 
@@ -156,17 +176,19 @@ If both agents are running simultaneously, give them distinct focuses:
 | **Codex / Claude Code (local)** | Code writing, experiments | Training runs, code changes, data analysis |
 | **cc-connect (remote)** | Monitoring, light tasks | Check status, read logs, write cards, small edits |
 
-### 5. The 4 Magic Phrases
+### 5. The 6 Magic Phrases
 
 | You say | Agent does |
 |---------|-----------|
-| **"kickoff"** / "start" | Read CURRENT.md + recent cards + report status |
+| **"kickoff"** / "start" | Read CURRENT.md + recent cards + report status → **wait for confirmation** |
+| **"resume"** / "继续" | Check timestamp → read 3 latest cards → report |
 | **"refresh"** / "sync" | Re-read CURRENT.md + latest cards |
 | **"wrap"** / "done" | Write cards + update CURRENT.md + summarize |
 | **"status"** / "progress" | Read CURRENT.md + recent cards, report experiment state |
+| **"note this"** / "记一下" | Immediately write the last finding as a card |
 
 These trigger words work in **any language**. See `locales/` for supported languages.
-Chinese (`开工`/`收工`/`刷新`/`进度`) is the first supported locale.
+Chinese (`开工`/`继续`/`收工`/`刷新`/`进度`/`记一下`) is the first supported locale.
 
 ## Current Entry Points
 

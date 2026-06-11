@@ -21,6 +21,7 @@ Then report: "Ready. Current status: [one-line summary]"
 - Write a card for every finding, decision, or risk.
 - Update CURRENT.md when experiment status changes.
 - Do not leave important info in chat only.
+- If the user says **"note this"** / **"记一下"**: immediately write a card, don't wait.
 
 ## At Session End
 

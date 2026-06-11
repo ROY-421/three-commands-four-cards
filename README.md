@@ -1,7 +1,7 @@
 # Three Commands, Four Cards (T3C4)
 
 > A minimal, battle-tested multi-AI-agent project collaboration protocol.
-> **4 magic phrases. 3 files. 1 directory. 3 minutes to bootstrap.**
+> **6 magic phrases. 3 files. 1 directory. 3 minutes to bootstrap.**
 
 ## What Is This?
 
@@ -11,16 +11,20 @@ T3C4 solves this with a simple rule: **all agents share the same files = all age
 
 No server. No API. No encryption keys. Just files.
 
-## The 4 Magic Phrases
+## The 6 Magic Phrases
 
 | You say | Agent does |
 |---------|-----------|
-| **"kickoff"** / "start" | Read CURRENT.md → read latest 3 cards → report status → wait for orders |
+| **"kickoff"** / "start" | Read CURRENT.md → read latest 3 cards + all open risks → report status → **wait for your confirmation before acting** |
+| **"resume"** / "继续" | Quick re-alignment: check CURRENT.md timestamp → read latest 3 cards → report → wait for orders |
 | **"wrap"** / "done" | Write new cards for everything learned → update CURRENT.md → summarize |
 | **"refresh"** / "sync" | Check CURRENT.md timestamp → re-read if changed → read new cards → report |
 | **"status"** / "progress" | Read CURRENT.md → report experiment queue, blockers, next steps |
+| **"note this"** / "记一下" | Immediately write the last finding as a card — don't wait for wrap |
 
-These trigger words work in **any language**. Chinese (`开工`/`收工`/`刷新`/`进度`) is the first supported locale. See `locales/zh-CN/`.
+These trigger words work in **any language**. Chinese (`开工`/`继续`/`收工`/`刷新`/`进度`/`记一下`) is the first supported locale. See `locales/zh-CN/`.
+
+> **v4.1 change**: On "kickoff", the agent now reports status and **waits for your confirmation** before starting any work. No more acting on its own.
 
 ## Quick Start (3 Minutes)
 
@@ -40,23 +44,28 @@ cp -r t3c4/* your-project/
 # docs/pm-kb/cards/YYYY-MM-DD-project-goals.md
 # docs/pm-kb/cards/YYYY-MM-DD-data-overview.md
 
-# 5. Say "kickoff"
-# Your agent reads CURRENT.md, knows the plan, and waits for orders.
+# 5. Write the project overview summary
+# docs/pm-kb/summaries/project-overview.md
+
+# 6. Say "kickoff"
+# Your agent reads CURRENT.md, knows the plan, reports status, and waits for your confirmation.
 ```
 
 ## How It Works
 
 ```
-Agent A (desktop)  →  writes cards + updates CURRENT.md  →  files changed
-                                                              ↓
-Agent B (remote)   →  says "refresh" → reads CURRENT.md    →  knows what A did
-                                                              ↓
-                   →  writes cards + updates CURRENT.md    →  files changed
-                                                              ↓
-Agent A returns    →  says "refresh" → reads CURRENT.md    →  knows what B did
+Agent A (desktop)  →  says "wrap" → writes cards + updates CURRENT.md  →  files changed
+                                                                           ↓
+Agent B (remote)   →  says "refresh" → re-reads CURRENT.md + cards     →  knows what A did
+                   →  says "kickoff" → reports status → A confirms      →  works
+                                                                           ↓
+                   →  says "wrap" → writes cards + updates CURRENT.md  →  files changed
+                                                                           ↓
+Agent A returns    →  says "refresh" → re-reads CURRENT.md + cards     →  knows what B did
+                   →  says "kickoff" → reports status → B confirms      →  works
 ```
 
-**The filesystem is the shared bus.** Every agent reads from it on start, writes to it on finish. No direct communication needed.
+**The filesystem is the shared bus.** Every agent reads from it on start, writes to it on finish. No direct communication needed. Agents always report status and wait for confirmation before acting.
 
 ## Directory Structure
 
@@ -128,6 +137,7 @@ T3C4 is trigger-language-agnostic. The protocol defines **actions** (start-sessi
 | Action | English | 中文 |
 |--------|---------|------|
 | start-session | kickoff, start | 开工 |
+| resume-session | resume, continue | 继续 |
 | end-session | wrap, done | 收工 |
 | refresh-context | refresh, sync | 刷新上下文 |
 | check-status | status, progress | 看看进度 |
@@ -149,12 +159,38 @@ See `locales/zh-CN/` for the full Chinese protocol.
 
 T3C4 is deliberately minimal. It doesn't do encryption, federation, or HTTP APIs — because for a single person running 2-3 agents on the same project, you don't need any of that. You just need files.
 
+## FAQ
+
+**Q: Do agents automatically read CURRENT.md?**
+A: No. But when you say **"kickoff"** or **"refresh"**, they do. These are the triggers.
+
+**Q: What if two agents edit CURRENT.md at the same time?**
+A: Very unlikely — you wouldn't say "wrap" simultaneously. If it happens, the rule is: read before editing, merge don't overwrite.
+
+**Q: Do I have to use `docs/pm-kb/`?**
+A: Not strictly, but consistency matters. Same paths across projects means agents never need to guess.
+
+**Q: Cards pile up over time. What do I do?**
+A: Cards are atomic units — no need to delete. When a project ends, compile valuable cards into a knowledge base summary and archive the rest.
+
+**Q: What's the difference between "kickoff" and "resume"?**
+A: "kickoff" does a full context load (CURRENT.md + AGENTS.md + summaries + 5 recent cards + all open risks). "resume" is a quick re-alignment (check timestamp + 3 latest cards) — use it when your agent already has most of the context.
+
 ## Philosophy
 
 - **Files over APIs** — Every agent can read files. Not every agent can call your HTTP endpoint.
 - **Convention over configuration** — `AGENTS.md`, `CURRENT.md`, `docs/pm-kb/cards/`. Same names, every project.
 - **Facts over narratives** — Cards are atomic facts. Summaries are synthesized views. Separate them.
 - **Human-readable first** — All files are plain Markdown. You can read them without an agent.
+
+## Adopted By
+
+| Project | Status |
+|---------|--------|
+| ChatDoc (Meteorological AI Office Platform) | ✅ Production |
+| Meteorology Competition Entries (Radar, Hail, etc.) | ✅ Active |
+
+---
 
 ## License
 

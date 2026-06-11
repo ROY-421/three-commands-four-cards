@@ -13,7 +13,7 @@
 id: card-YYYY-MM-DD-xxx
 type: decision | task | risk | meeting | finding | reference
 status: open | active | done | blocked | archived | superseded
-superseded_by: [card-id]  (if status: superseded)
+superseded_by: [card-id]  (required when status=superseded)
 date: YYYY-MM-DD
 project: [project-name]
 keywords: [tag1, tag2]
@@ -21,13 +21,13 @@ source: user | meeting | doc | code | web
 summary: One-line description
 ---
 
-## Context
+## Context / 背景
 
-## Details
+## Details / 详细内容
 
-## Implication
+## Implication / 结论与影响
 
-## Next
+## Next / 下一步
 ```
 
 ## Summary Template
